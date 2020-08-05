@@ -1,0 +1,7 @@
+{
+	"name": "Sample Block",
+	"description": "A Sample Salesforce Marketing Cloud Content Builder Custom Block",
+	"repository": "https://github.com/tbesluau/sampleblock",
+	"logo": "https://github.com/tbesluau/sampleblock/blob/master/dist/icon.png?raw=true",
+	"keywords": ["node", "express", "static", "content builder", "block", "blocksdk"]
+}

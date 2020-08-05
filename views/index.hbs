@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta charset="utf-8" />
+		<title>Google Picker Example</title>
+		<meta name="google-site-verification" content="sGIa91tyvDZoa0mEieBvi2-D4jq4nwacDwi5Ie6PEAs" />
+		<script>
+			window.app = {
+				developerKey: '{{@developerKey}}',
+				appId: '{{@appId}}',
+				clientId: '{{@clientId}}',
+				scope: ['https://www.googleapis.com/auth/drive.file', 'https://www.googleapis.com/auth/drive.readonly'],
+				oauthToken: undefined
+			};
+		</script>
+	</head>
+  <body>
+	<div id="main"></div>
+	
+	<script src="/main.js"></script>
+    <!-- The Google API Loader script. -->
+    <script type="text/javascript" src="https://apis.google.com/js/api.js?onload=loadPicker"></script>
+  </body>
+</html>
