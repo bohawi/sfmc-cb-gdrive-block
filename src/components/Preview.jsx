@@ -2,9 +2,12 @@ import React from 'react';
 
 function Preview(data) {
 	return (
-		<div style={{
-			width: '20rem'
-		}}>
+		<div 
+			className="preview-wrapper"
+			style={{
+				width: '20rem'
+			}
+		}>
 			<div className="slds-file slds-file_card slds-has-title">
 				<figure>
 					<a href="javascript:void(0);" className="slds-file__crop">

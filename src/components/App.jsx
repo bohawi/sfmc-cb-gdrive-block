@@ -4,14 +4,24 @@ import SDK from 'blocksdk';
 import Preview from './Preview';
 import Button from './Button';
 
+import '../style.css';
+
+const DEFAULT_WIDTH = 450;
+const EXPANDED_WIDTH = 850;
+
 function App() {
-  const [ name, setName ] = useState('test name hook');
+  const [ name, setName ] = useState('Please Select an Image');
   const [ url, setUrl ] = useState('data:image/png;base64,')
 
   const { google, gapi, app } = window;
   const { appId, oauthToken, developerKey} = app;
 
-  const sdk = new SDK(null, null, true); // 3rd argument true bypassing https requirement: not prod worthy
+  const sdk = new SDK({
+    blockEditorWidth: DEFAULT_WIDTH
+  });
+
+  // Default to S1, why not?
+  let stack = 's1';
 
   sdk.getData((data) => {
     const { id, name, mimeType } = data;
@@ -24,6 +34,10 @@ function App() {
       setName(name);
     }
   });
+
+  sdk.getUserData((userData)=> {
+    stack = userData.stack.toLowerCase();
+  })
 
 function fetchAssetData(id) {
   return gapi.client.drive.files.get({
@@ -47,7 +61,8 @@ function pickerCallback(data) {
       mimeType
     });
 
-    console.log('The user selected: ', asset);
+    sdk.setBlockEditorWidth(DEFAULT_WIDTH);
+
     getFileBytes(id, mimeType);
 	}
 }
@@ -70,7 +85,6 @@ function getFileBytes (id, mimeType) {
         setUrl(url);
 
 				sdk.setContent(`<img src="${url}"`);
-				console.log('datauri', url);
 			};
 			reader.readAsDataURL(fileBlob);
 		});
@@ -79,6 +93,8 @@ function getFileBytes (id, mimeType) {
   function displayPicker() {
     const view = new google.picker.View(google.picker.ViewId.DOCS);
     view.setMimeTypes('image/png,image/jpeg,image/jpg');
+    
+    sdk.setBlockEditorWidth(EXPANDED_WIDTH);
     
     const picker = new google.picker.PickerBuilder()
       .enableFeature(google.picker.Feature.NAV_HIDDEN)
@@ -89,13 +105,13 @@ function getFileBytes (id, mimeType) {
       .addView(new google.picker.DocsUploadView())
       .setDeveloperKey(developerKey)
       .setCallback(pickerCallback)
-      .setOrigin('https://mc.s11.exacttarget.com/')
+      .setOrigin(`https://mc.${stack}.exacttarget.com/`)
       .build();
       picker.setVisible(true);
   }
 
   return (
-    <div>
+    <div className="app-wrapper">
       <Preview
         name={name}
         url={url}
